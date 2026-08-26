@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>心动评分</title>
+  <link rel="preconnect" href="https://images.unsplash.com" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar"><div class="brand">✦ 心动评分</div><button class="quota" id="quotaBtn">今日 <b id="quotaValue">2</b>/20</button></header>
+
+    <section class="screen active" id="discoverScreen">
+      <div class="filter-row"><button class="chip active" data-filter="all">全部</button><button class="chip" data-filter="female">女生</button><button class="chip" data-filter="male">男生</button></div>
+      <div class="progress"><span id="progressText">今日已评价 2 / 20</span><div><i id="progressBar"></i></div></div>
+      <article class="person-card" id="personCard" role="button" tabindex="0" aria-label="查看个人资料">
+        <img id="personPhoto" alt="待评价用户照片" /><div class="photo-shade"></div>
+        <div class="card-gallery-nav" aria-label="切换照片"><button id="prevPhotoBtn" aria-label="上一张照片">‹</button><button id="nextPhotoBtn" aria-label="下一张照片">›</button></div>
+        <div class="person-meta"><div><h1 id="personName"></h1><p id="personIntro"></p></div><span class="verified">✓ 已审核</span></div>
+        <span class="tap-hint">点击查看个人资料 ›</span>
+      </article>
+      <section class="rating-panel">
+        <div class="rating-head"><span>你的第一印象是？</span><span class="muted" id="ratingHint">匿名评价</span></div>
+        <div class="score-row" id="scoreRow"></div>
+        <p class="score-tip">友善评分，每位用户满 50 次评价后才展示平均分</p>
+      </section>
+    </section>
+
+    <section class="screen" id="rankScreen"><div class="page-heading"><p id="rankScopeText">仅展示有效、已审核资料</p><h2>颜值排行榜</h2></div><div class="rank-tabs"><button class="active" data-rank-scope="national">全国</button><button data-rank-scope="province">本省</button><button data-rank-scope="city">本市</button></div><div class="rank-list" id="rankList"></div></section>
+
+    <section class="screen" id="profileScreen">
+      <div class="page-heading"><p>上传资料需人工审核</p><h2>我的资料</h2></div>
+      <article class="review-card" id="reviewCard"><span class="status-dot"></span><div><b id="reviewTitle">资料已审核通过</b><p id="reviewText">你可以开始评价，也会进入其他人的发现页。</p></div></article>
+      <section class="my-score-card"><div class="my-score-main"><div><p>我的综合评分</p><strong id="myAverageScore">--</strong><span id="myScoreStatus">累计满 50 次有效评价后显示</span></div><span class="verified score-verified">✓ 已审核</span></div><div class="my-score-stats"><div><b id="validRatingCount">0</b><span>有效评价</span></div><div><b id="excludedRatingCount">0</b><span>风险排除</span></div><div><b>50</b><span>显示门槛</span></div></div></section>
+      <section class="recent-ratings"><div class="section-title"><b>近期收到的评分</b><span>近 7 天</span></div><p class="rating-rule">系统会排除疑似恶意高分、恶意低分及异常频率评分，它们不计入平均分。</p><div id="recentRatingList"></div></section>
+      <section class="upload-panel"><div class="section-title"><b>我的照片</b><span id="photoCount">3 / 3 张</span></div><p>至少上传 3 张本人近期照片，必须包含 1 张正面五官清晰照。</p><div class="upload-grid" id="uploadGrid"></div><label class="upload-add" for="photoInput">＋<small>添加照片</small></label><input id="photoInput" type="file" accept="image/*" multiple hidden /></section>
+      <section class="upload-panel"><div class="section-title"><b>自拍视频（可选）</b><span class="optional">提升可信度</span></div><p>支持上传短视频，审核通过后可在个人资料中展示。</p><label class="video-upload" for="videoInput"><span>▹</span><b id="videoLabel">上传视频</b><small>MP4、MOV，建议 30 秒内</small></label><input id="videoInput" type="file" accept="video/*" hidden /></section>
+      <section class="badge-section"><div class="section-title"><b>我的成就</b><span class="muted">审核通过后解锁</span></div><div class="badges" id="myBadges"></div></section>
+      <button class="primary" id="submitReviewBtn">提交人工审核</button>
+    </section>
+
+    <nav class="bottom-nav"><button class="nav-item active" data-screen="discoverScreen">⌁<small>发现</small></button><button class="nav-item" data-screen="rankScreen">♛<small>排行</small></button><button class="nav-item" data-screen="profileScreen">◉<small>我的</small></button></nav>
+  </main>
+  <div class="modal-backdrop" id="profileModal"><section class="profile-modal"><button class="modal-close" data-close="profileModal">×</button><img id="modalHero" class="modal-hero" alt="个人主页照片" /><div class="modal-content"><div class="modal-name"><div><h2 id="modalName"></h2><p id="modalIntro"></p></div><span class="verified">✓ 已审核</span></div><div class="badge-row" id="modalBadges"></div><div class="profile-stats"><div><b id="modalScore">--</b><span>平均分</span></div><div><b id="modalRatings"></b><span>收到评价</span></div><div><b>3</b><span>已审照片</span></div></div><p class="privacy-note" id="scoreNote"></p><div class="gallery" id="modalGallery"></div><button class="primary" data-close="profileModal">返回发现</button></div></section></div>
+  <div class="modal-backdrop center" id="quotaModal"><section class="dialog"><button class="modal-close" data-close="quotaModal">×</button><span class="dialog-icon">✓</span><h3>今日评价额度</h3><strong><i id="modalQuota">18</i> 次剩余</strong><p>每日最多可完成 20 次匿名评价，明日自动恢复。</p></section></div>
+  <div class="toast" id="toast"></div>
+  <section class="consent-screen" id="consentScreen" aria-label="用户协议与免责提示">
+    <div class="consent-card">
+      <span class="consent-mark">✦</span><p class="eyebrow">使用前请确认</p><h1>用户协议与隐私提示</h1>
+      <div class="consent-copy">
+        <p><b>请先阅读：</b>本服务仅供成年人在友善、尊重的前提下进行匿名外貌印象交流，不构成医疗、心理、就业、婚恋或任何专业评价、建议或结论。</p>
+        <h3>1. 年龄与授权</h3><p>你确认已年满 18 周岁，并对上传的照片、视频及资料拥有合法权利和必要授权；不得上传他人肖像、未成年人内容或侵犯隐私、肖像权、著作权的内容。</p>
+        <h3>2. 个人信息与展示</h3><p>面部照片、视频可能包含敏感个人信息。我们仅为资料审核、展示、匿名评价与安全风控处理这些信息，并采取合理安全措施。你可申请删除资料；法律法规要求留存的除外。请勿上传身份证件、住址、联系方式等敏感信息。</p>
+        <h3>3. 内容审核与违规处理</h3><p>所有上传资料须经人工审核通过后才可参与评价。禁止盗图、冒用、AI 换脸/伪造、色情低俗、侮辱诽谤、歧视、骚扰、诱导交易及其他违法或侵权内容。我们可删除内容、限制功能、暂停或关闭账号，并配合依法处理投诉。</p>
+        <h3>4. 评价规则与风险提示</h3><p>评分为用户主观印象，仅在累计 50 次匿名评价后展示平均分；请理性看待，不得据此攻击、骚扰、歧视或线下追踪他人。每日最多可评价 20 次，单次评价之间设有冷却时间。</p>
+        <h3>5. 同意与联系</h3><p>点击“已阅读并同意”即表示你已阅读并同意本协议、隐私处理和平台规则，并接受必要的审核与风控。若不同意，请退出本服务。</p>
+      </div>
+      <button class="primary" id="agreeBtn">已阅读并同意</button><button class="decline-btn" id="declineBtn">不同意并退出</button>
+    </div>
+  </section>
+  <section class="exit-screen" id="exitScreen"><div><span>✦</span><h1>你已退出</h1><p>需同意用户协议后方可使用本服务。</p></div></section>
+  <script src="app.js"></script>
+</body>
+</html>

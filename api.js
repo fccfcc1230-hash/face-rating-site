@@ -1,0 +1,3 @@
+const API_BASE_URL='https://face-rating-api.fccfcc1230.workers.dev';
+async function apiRequest(path,options={}){const token=localStorage.getItem('face_rating_token');const response=await fetch(`${API_BASE_URL}${path}`,{...options,headers:{'content-type':'application/json',...(token?{authorization:`Bearer ${token}`}:{})}});const body=await response.json().catch(()=>({}));if(!response.ok)throw new Error(body.error||'请求失败，请稍后重试');return body;}
+window.FaceRatingApi={register:payload=>apiRequest('/api/auth/register',{method:'POST',body:JSON.stringify(payload)}),login:payload=>apiRequest('/api/auth/login',{method:'POST',body:JSON.stringify(payload)}),submitProfile:()=>apiRequest('/api/me/profile',{method:'PATCH',body:JSON.stringify({submitForReview:true})})};

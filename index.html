@@ -45,6 +45,7 @@
   <div class="modal-backdrop" id="profileModal"><section class="profile-modal"><button class="modal-close" data-close="profileModal">×</button><img id="modalHero" class="modal-hero" alt="个人主页照片" /><div class="modal-content"><div class="modal-name"><div><h2 id="modalName"></h2><p id="modalIntro"></p></div><span class="verified">✓ 已审核</span></div><div class="badge-row" id="modalBadges"></div><div class="profile-stats"><div><b id="modalScore">--</b><span>平均分</span></div><div><b id="modalRatings"></b><span>收到评价</span></div><div><b>3</b><span>已审照片</span></div></div><p class="privacy-note" id="scoreNote"></p><div class="gallery" id="modalGallery"></div><button class="primary" data-close="profileModal">返回发现</button></div></section></div>
   <div class="modal-backdrop center" id="quotaModal"><section class="dialog"><button class="modal-close" data-close="quotaModal">×</button><span class="dialog-icon">✓</span><h3>今日评价额度</h3><strong><i id="modalQuota">18</i> 次剩余</strong><p>每日最多可完成 20 次匿名评价，明日自动恢复。</p></section></div>
   <div class="toast" id="toast"></div>
+  <div class="modal-backdrop center" id="authModal"><section class="dialog auth-dialog"><button class="modal-close" data-close="authModal">×</button><span class="dialog-icon">✦</span><h3 id="authTitle">创建账户</h3><p id="authDescription">注册后才可提交资料并参与匿名评价。</p><input class="auth-input" id="authName" placeholder="昵称" autocomplete="nickname" /><input class="auth-input" id="authEmail" type="email" placeholder="邮箱" autocomplete="email" /><input class="auth-input" id="authPassword" type="password" placeholder="密码（至少 10 位）" autocomplete="new-password" /><label class="auth-consent" id="adultConsent"><input type="checkbox" id="adultCheckbox" /> 我已年满 18 岁并同意隐私处理</label><button class="primary" id="authSubmitBtn">注册并继续</button><button class="decline-btn" id="authModeBtn">已有账户？去登录</button></section></div>
   <section class="consent-screen" id="consentScreen" aria-label="用户协议与免责提示">
     <div class="consent-card">
       <span class="consent-mark">✦</span><p class="eyebrow">使用前请确认</p><h1>用户协议与隐私提示</h1>
@@ -60,6 +61,7 @@
     </div>
   </section>
   <section class="exit-screen" id="exitScreen"><div><span>✦</span><h1>你已退出</h1><p>需同意用户协议后方可使用本服务。</p></div></section>
+  <script src="api.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -9,7 +9,6 @@ const myRatingRecords = [
   {score:1, time:'昨天 18:29', valid:false, reason:'疑似恶意低分'}, {score:9, time:'8 月 9 日', valid:true}
 ];
 let current = 0, filter = 'all', rated = 2, myProfileApproved = true, ratingCooling = false, cooldownTimer, cardPhotoIndex = 0, rankScope = 'national';
-let authMode = 'register';
 const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
 function toast(text){ const el=$('#toast'); el.textContent=text; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1900); }
 function currentPeople(){ return people.filter(p=>filter==='all'||p.gender===filter); }
@@ -45,15 +44,12 @@ const myPhotos=['https://images.unsplash.com/photo-1494790108377-be9c29b29330?au
 function renderUploads(){ $('#photoCount').textContent=`${myPhotos.length} / 3 张`; $('#uploadGrid').innerHTML=myPhotos.map((x,i)=>`<div class="upload-photo ${i===0?'front-photo':''}"><img src="${x}" alt="我的照片 ${i+1}">${i===0?'<span>正面五官照</span>':''}</div>`).join(''); }
 $('#photoInput').onchange=e=>{ [...e.target.files].forEach(f=>myPhotos.push(URL.createObjectURL(f))); renderUploads(); toast('照片已添加，请提交人工审核'); };
 $('#videoInput').onchange=e=>{ if(e.target.files[0]){ $('#videoLabel').textContent='视频已选择，待审核'; toast('视频已添加，请一并提交审核'); }};
-$('#submitReviewBtn').onclick=async()=>{ if(!localStorage.getItem('face_rating_token')){ $('#authModal').classList.add('show'); toast('请先注册或登录'); return; } if(myPhotos.length<3){toast('请至少上传 3 张照片后再提交'); return;} try{ await FaceRatingApi.submitProfile(); myProfileApproved=false; $('#reviewCard').classList.add('pending'); $('#reviewTitle').textContent='资料正在人工审核'; $('#reviewText').textContent='审核通过前，你不能开始评价，也不会进入发现页。'; $('#submitReviewBtn').textContent='审核中'; $('#submitReviewBtn').disabled=true; toast('已提交人工审核'); }catch(error){toast(error.message);} };
+$('#submitReviewBtn').onclick=()=>{ if(myPhotos.length<3){toast('请至少上传 3 张照片后再提交'); return;} myProfileApproved=false; $('#reviewCard').classList.add('pending'); $('#reviewTitle').textContent='资料正在人工审核'; $('#reviewText').textContent='审核通过前，你不能开始评价，也不会进入发现页。'; $('#submitReviewBtn').textContent='审核中'; $('#submitReviewBtn').disabled=true; toast('已提交人工审核'); };
 $$('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;current=0;cardPhotoIndex=0;$$('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderCard();});
 $$('[data-rank-scope]').forEach(b=>b.onclick=()=>{rankScope=b.dataset.rankScope;$$('[data-rank-scope]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderRank();});
 $$('.nav-item').forEach(b=>b.onclick=()=>{$$('.nav-item').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('active'));$('#'+b.dataset.screen).classList.add('active');});
 $('#personCard').onclick=()=>openProfile($('#personCard').dataset.person); $('#personCard').onkeydown=e=>{if(e.target===e.currentTarget&&e.key==='Enter')openProfile($('#personCard').dataset.person)}; $('#quotaBtn').onclick=()=>$('#quotaModal').classList.add('show'); $$('[data-close]').forEach(b=>b.onclick=()=>$('#'+b.dataset.close).classList.remove('show'));
 $('#prevPhotoBtn').onclick=e=>{e.stopPropagation();switchCardPhoto(-1)}; $('#nextPhotoBtn').onclick=e=>{e.stopPropagation();switchCardPhoto(1)};
-function renderAuth(){const login=authMode==='login';$('#authTitle').textContent=login?'登录账户':'创建账户';$('#authDescription').textContent=login?'登录后可继续使用你的资料与评分记录。':'注册后才可提交资料并参与匿名评价。';$('#authName').hidden=login;$('#adultConsent').hidden=login;$('#authSubmitBtn').textContent=login?'登录并继续':'注册并继续';$('#authModeBtn').textContent=login?'还没有账户？去注册':'已有账户？去登录';}
-$('#authModeBtn').onclick=()=>{authMode=authMode==='login'?'register':'login';renderAuth();};
-$('#authSubmitBtn').onclick=async()=>{const email=$('#authEmail').value.trim(),password=$('#authPassword').value,displayName=$('#authName').value.trim();try{const result=authMode==='login'?await FaceRatingApi.login({email,password}):await FaceRatingApi.register({email,password,displayName,adultConfirmed:$('#adultCheckbox').checked});localStorage.setItem('face_rating_token',result.token);$('#authModal').classList.remove('show');$('#consentScreen').classList.add('hide');toast(`欢迎你，${result.user.displayName}`);}catch(error){$('#authDescription').textContent=error.message;toast(error.message);}};
-$('#agreeBtn').onclick=()=>{if(localStorage.getItem('face_rating_token'))$('#consentScreen').classList.add('hide');else{renderAuth();$('#authModal').classList.add('show');}};
+$('#agreeBtn').onclick=()=>$('#consentScreen').classList.add('hide');
 $('#declineBtn').onclick=()=>{ $('#consentScreen').classList.add('hide'); $('#exitScreen').classList.add('show'); try{ window.close(); }catch(e){} };
 renderCard(); renderScores(); renderProgress(); renderRank(); renderMyRatings(); renderUploads(); $('#myBadges').innerHTML=['✓ 真人审核','✦ 小美','◉ 连续评价 7 天'].map(x=>`<span class="badge">${x}</span>`).join('');

@@ -12,13 +12,14 @@
     <header class="topbar"><div class="brand">✦ 心动评分</div><button class="quota" id="quotaBtn">今日 <b id="quotaValue">2</b>/20</button></header>
 
     <section class="screen active" id="discoverScreen">
+      <button class="achievement-entry" id="achievementEntry"><span class="achievement-emblem">✦</span><span><small>我的颜值成就</small><b id="discoveryAchievement">待点亮</b></span><span class="achievement-entry-more">查看成就 ›</span></button>
       <div class="filter-row"><button class="chip active" data-filter="all">全部</button><button class="chip" data-filter="female">女生</button><button class="chip" data-filter="male">男生</button></div>
       <div class="progress"><span id="progressText">今日已评价 2 / 20</span><div><i id="progressBar"></i></div></div>
       <article class="person-card" id="personCard" role="button" tabindex="0" aria-label="查看个人资料">
         <img id="personPhoto" alt="待评价用户照片" /><div class="photo-shade"></div>
         <div class="card-gallery-nav" aria-label="切换照片"><button id="prevPhotoBtn" aria-label="上一张照片">‹</button><button id="nextPhotoBtn" aria-label="下一张照片">›</button></div>
         <div class="person-meta"><div><h1 id="personName"></h1><p id="personIntro"></p></div><span class="verified">✓ 已审核</span></div>
-        <span class="tap-hint">点击查看个人资料 ›</span>
+        <span class="tap-hint">点击查看个人资料 ›</span><span class="person-achievement" id="personAchievement"></span>
       </article>
       <section class="rating-panel">
         <div class="rating-head"><span>你的第一印象是？</span><span class="muted" id="ratingHint">匿名评价</span></div>
@@ -40,7 +41,15 @@
       <button class="primary" id="submitReviewBtn">提交人工审核</button>
     </section>
 
-    <nav class="bottom-nav"><button class="nav-item active" data-screen="discoverScreen">⌁<small>发现</small></button><button class="nav-item" data-screen="rankScreen">♛<small>排行</small></button><button class="nav-item" data-screen="profileScreen">◉<small>我的</small></button></nav>
+    <section class="screen" id="achievementScreen">
+      <div class="page-heading"><p>每一份认可，都值得珍藏</p><h2>我的成就</h2></div>
+      <div class="rank-tabs" aria-label="成就演示性别"><button data-achievement-gender="female" class="active" aria-pressed="true">女生版</button><button data-achievement-gender="male" aria-pressed="false">男生版</button></div>
+      <section class="achievement-summary"><span class="achievement-emblem">✦</span><h3 id="achievementTitle"></h3><p id="achievementSummary"></p></section>
+      <p class="achievement-rules">累计满 50 次有效评价后，按当前平均分点亮已达到的所有档位；展示最高称号。5 / 6 / 7 / 8 / 9 分依次解锁，9～10 分为最高档。</p>
+      <div class="achievement-grid" id="achievementGrid"></div>
+      <p class="achievement-rules">当前为演示数据，可切换男女称号预览。</p>
+    </section>
+    <nav class="bottom-nav"><button class="nav-item active" data-screen="discoverScreen">⌁<small>发现</small></button><button class="nav-item" data-screen="rankScreen">♛<small>排行</small></button><button class="nav-item" data-screen="achievementScreen">✦<small>成就</small></button><button class="nav-item" data-screen="profileScreen">◉<small>我的</small></button></nav>
   </main>
   <div class="modal-backdrop" id="profileModal"><section class="profile-modal"><button class="modal-close" data-close="profileModal">×</button><img id="modalHero" class="modal-hero" alt="个人主页照片" /><div class="modal-content"><div class="modal-name"><div><h2 id="modalName"></h2><p id="modalIntro"></p></div><span class="verified">✓ 已审核</span></div><div class="badge-row" id="modalBadges"></div><div class="profile-stats"><div><b id="modalScore">--</b><span>平均分</span></div><div><b id="modalRatings"></b><span>收到评价</span></div><div><b>3</b><span>已审照片</span></div></div><p class="privacy-note" id="scoreNote"></p><div class="gallery" id="modalGallery"></div><button class="primary" data-close="profileModal">返回发现</button></div></section></div>
   <div class="modal-backdrop center" id="quotaModal"><section class="dialog"><button class="modal-close" data-close="quotaModal">×</button><span class="dialog-icon">✓</span><h3>今日评价额度</h3><strong><i id="modalQuota">18</i> 次剩余</strong><p>每日最多可完成 20 次匿名评价，明日自动恢复。</p></section></div>
@@ -60,6 +69,7 @@
     </div>
   </section>
   <section class="exit-screen" id="exitScreen"><div><span>✦</span><h1>你已退出</h1><p>需同意用户协议后方可使用本服务。</p></div></section>
+  <script src="achievements.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

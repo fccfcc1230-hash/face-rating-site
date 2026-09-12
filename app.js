@@ -10,9 +10,25 @@ const myRatingRecords = [
 ];
 let current = 0, filter = 'all', rated = 2, myProfileApproved = true, ratingCooling = false, cooldownTimer, cardPhotoIndex = 0, rankScope = 'national';
 const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const myAchievementProfile = { gender: 'female', score: 8.6, ratings: 126 };
+function renderAchievements(){
+  const achievements = getAchievements(myAchievementProfile);
+  const title = getAchievementTitle(myAchievementProfile);
+  $('#discoveryAchievement').textContent=title;
+  $('#achievementTitle').textContent=title;
+  $('#achievementSummary').textContent=`平均分 ${myAchievementProfile.score} · 已点亮 ${achievements.filter(achievement=>achievement.unlocked).length} / 5`;
+  $('#achievementGrid').innerHTML=achievements.map(achievement=>`<article class="achievement-tile ${achievement.unlocked?'unlocked':'locked'}"><span class="achievement-emblem">${achievement.unlocked?'✦':'◇'}</span><h3>${achievement.name}</h3><p>平均分达到 ${achievement.threshold} 分</p><span class="achievement-state">${achievement.unlocked?'已点亮':'未点亮'}</span></article>`).join('');
+  $('#myBadges').innerHTML=achievements.filter(achievement=>achievement.unlocked).map(achievement=>`<span class="badge">✦ ${achievement.name}</span>`).join('');
+}
+$('#achievementEntry').onclick=()=>$('.nav-item[data-screen="achievementScreen"]').click();
+$$('[data-achievement-gender]').forEach(button=>button.onclick=()=>{
+  myAchievementProfile.gender=button.dataset.achievementGender;
+  $$('[data-achievement-gender]').forEach(option=>{const active=option===button;option.classList.toggle('active',active);option.setAttribute('aria-pressed',String(active));});
+  renderAchievements();
+});
 function toast(text){ const el=$('#toast'); el.textContent=text; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1900); }
 function currentPeople(){ return people.filter(p=>filter==='all'||p.gender===filter); }
-function renderCard(){ const list=currentPeople(), p=list[current%list.length], photo=p.gallery[cardPhotoIndex%p.gallery.length]; $('#personPhoto').src=photo; $('#personName').textContent=p.name; $('#personIntro').textContent=p.intro; $('#personCard').dataset.person=people.indexOf(p); }
+function renderCard(){ const list=currentPeople(), p=list[current%list.length], photo=p.gallery[cardPhotoIndex%p.gallery.length]; $('#personPhoto').src=photo; $('#personName').textContent=p.name; $('#personIntro').textContent=p.intro; $('#personCard').dataset.person=people.indexOf(p); $('#personAchievement').textContent=`✦ ${getAchievementTitle(p)}`; }
 function switchCardPhoto(step){ const p=currentPeople()[current%currentPeople().length]; cardPhotoIndex=(cardPhotoIndex+step+p.gallery.length)%p.gallery.length; renderCard(); }
 function renderProgress(){ $('#quotaValue').textContent=rated; $('#progressText').textContent=`今日已评价 ${rated} / 20`; $('#progressBar').style.width=`${rated*5}%`; $('#modalQuota').textContent=20-rated; }
 function renderScores(){ $('#scoreRow').innerHTML=Array.from({length:10},(_,i)=>`<button class="score" data-score="${i+1}">${i+1}</button>`).join(''); $$('.score').forEach(b=>b.onclick=()=>rate(b.dataset.score)); }
@@ -52,4 +68,5 @@ $('#personCard').onclick=()=>openProfile($('#personCard').dataset.person); $('#p
 $('#prevPhotoBtn').onclick=e=>{e.stopPropagation();switchCardPhoto(-1)}; $('#nextPhotoBtn').onclick=e=>{e.stopPropagation();switchCardPhoto(1)};
 $('#agreeBtn').onclick=()=>$('#consentScreen').classList.add('hide');
 $('#declineBtn').onclick=()=>{ $('#consentScreen').classList.add('hide'); $('#exitScreen').classList.add('show'); try{ window.close(); }catch(e){} };
-renderCard(); renderScores(); renderProgress(); renderRank(); renderMyRatings(); renderUploads(); $('#myBadges').innerHTML=['✓ 真人审核','✦ 小美','◉ 连续评价 7 天'].map(x=>`<span class="badge">${x}</span>`).join('');
+people.forEach(person=>{person.badges=person.badges.filter(badge=>!Object.values(achievementNames).flat().includes(badge));const title=getAchievementTitle(person);if(title!=='待点亮')person.badges.unshift(title);});
+renderCard(); renderScores(); renderProgress(); renderRank(); renderMyRatings(); renderUploads(); renderAchievements();

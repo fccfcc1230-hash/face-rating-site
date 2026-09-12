@@ -20,7 +20,10 @@ function renderAchievements(){
   $('#achievementGrid').innerHTML=achievements.map(achievement=>`<article class="achievement-tile ${achievement.unlocked?'unlocked':'locked'}"><span class="achievement-emblem">${achievement.unlocked?'✦':'◇'}</span><h3>${achievement.name}</h3><p>平均分达到 ${achievement.threshold} 分</p><span class="achievement-state">${achievement.unlocked?'已点亮':'未点亮'}</span></article>`).join('');
   $('#myBadges').innerHTML=achievements.filter(achievement=>achievement.unlocked).map(achievement=>`<span class="badge">✦ ${achievement.name}</span>`).join('');
 }
-$('#achievementEntry').onclick=()=>$('.nav-item[data-screen="achievementScreen"]').click();
+$('#achievementEntry').onclick=()=>{
+  $('.nav-item[data-screen="profileScreen"]').click();
+  $('#myAchievements').scrollIntoView({behavior:'smooth',block:'start'});
+};
 $$('[data-achievement-gender]').forEach(button=>button.onclick=()=>{
   myAchievementProfile.gender=button.dataset.achievementGender;
   $$('[data-achievement-gender]').forEach(option=>{const active=option===button;option.classList.toggle('active',active);option.setAttribute('aria-pressed',String(active));});

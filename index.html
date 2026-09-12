@@ -37,19 +37,19 @@
       <section class="recent-ratings"><div class="section-title"><b>近期收到的评分</b><span>近 7 天</span></div><p class="rating-rule">系统会排除疑似恶意高分、恶意低分及异常频率评分，它们不计入平均分。</p><div id="recentRatingList"></div></section>
       <section class="upload-panel"><div class="section-title"><b>我的照片</b><span id="photoCount">3 / 3 张</span></div><p>至少上传 3 张本人近期照片，必须包含 1 张正面五官清晰照。</p><div class="upload-grid" id="uploadGrid"></div><label class="upload-add" for="photoInput">＋<small>添加照片</small></label><input id="photoInput" type="file" accept="image/*" multiple hidden /></section>
       <section class="upload-panel"><div class="section-title"><b>自拍视频（可选）</b><span class="optional">提升可信度</span></div><p>支持上传短视频，审核通过后可在个人资料中展示。</p><label class="video-upload" for="videoInput"><span>▹</span><b id="videoLabel">上传视频</b><small>MP4、MOV，建议 30 秒内</small></label><input id="videoInput" type="file" accept="video/*" hidden /></section>
-      <section class="badge-section"><div class="section-title"><b>我的成就</b><span class="muted">审核通过后解锁</span></div><div class="badges" id="myBadges"></div></section>
       <button class="primary" id="submitReviewBtn">提交人工审核</button>
-    </section>
 
-    <section class="screen" id="achievementScreen">
+    <section class="badge-section" id="myAchievements">
       <div class="page-heading"><p>每一份认可，都值得珍藏</p><h2>我的成就</h2></div>
+      <div class="badges" id="myBadges"></div>
       <div class="rank-tabs" aria-label="成就演示性别"><button data-achievement-gender="female" class="active" aria-pressed="true">女生版</button><button data-achievement-gender="male" aria-pressed="false">男生版</button></div>
       <section class="achievement-summary"><span class="achievement-emblem">✦</span><h3 id="achievementTitle"></h3><p id="achievementSummary"></p></section>
       <p class="achievement-rules">累计满 50 次有效评价后，按当前平均分点亮已达到的所有档位；展示最高称号。5 / 6 / 7 / 8 / 9 分依次解锁，9～10 分为最高档。</p>
       <div class="achievement-grid" id="achievementGrid"></div>
       <p class="achievement-rules">当前为演示数据，可切换男女称号预览。</p>
     </section>
-    <nav class="bottom-nav"><button class="nav-item active" data-screen="discoverScreen">⌁<small>发现</small></button><button class="nav-item" data-screen="rankScreen">♛<small>排行</small></button><button class="nav-item" data-screen="achievementScreen">✦<small>成就</small></button><button class="nav-item" data-screen="profileScreen">◉<small>我的</small></button></nav>
+    </section>
+    <nav class="bottom-nav"><button class="nav-item active" data-screen="discoverScreen">⌁<small>发现</small></button><button class="nav-item" data-screen="rankScreen">♛<small>排行</small></button><button class="nav-item" data-screen="profileScreen">◉<small>我的</small></button></nav>
   </main>
   <div class="modal-backdrop" id="profileModal"><section class="profile-modal"><button class="modal-close" data-close="profileModal">×</button><img id="modalHero" class="modal-hero" alt="个人主页照片" /><div class="modal-content"><div class="modal-name"><div><h2 id="modalName"></h2><p id="modalIntro"></p></div><span class="verified">✓ 已审核</span></div><div class="badge-row" id="modalBadges"></div><div class="profile-stats"><div><b id="modalScore">--</b><span>平均分</span></div><div><b id="modalRatings"></b><span>收到评价</span></div><div><b>3</b><span>已审照片</span></div></div><p class="privacy-note" id="scoreNote"></p><div class="gallery" id="modalGallery"></div><button class="primary" data-close="profileModal">返回发现</button></div></section></div>
   <div class="modal-backdrop center" id="quotaModal"><section class="dialog"><button class="modal-close" data-close="quotaModal">×</button><span class="dialog-icon">✓</span><h3>今日评价额度</h3><strong><i id="modalQuota">18</i> 次剩余</strong><p>每日最多可完成 20 次匿名评价，明日自动恢复。</p></section></div>
